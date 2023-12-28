@@ -23,11 +23,11 @@ function wheel(state = initialWheelState, action) {
  // counterclockwise: minus one from the state, as long as index is less than or equal to 5 and greater than 0
   
     switch(action.type){
-      case MOVE_CLOCKWISE:
+      case MOVE_COUNTERCLOCKWISE:
         if (--state < 0) return 5;
         return state--
 
-        case MOVE_COUNTERCLOCKWISE:
+        case MOVE_CLOCKWISE:
           if (++state > 5) return 0;
           return state++
 
