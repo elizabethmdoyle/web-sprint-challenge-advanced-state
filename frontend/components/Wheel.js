@@ -5,7 +5,7 @@ const Wheel = (props) => {
   console.log(props)
 
   const counterClockwise = () => {
-    wheel.moveClockwise()
+  moveClockwise()
   }
   return (
     <div id="wrapper">
@@ -28,8 +28,8 @@ const Wheel = (props) => {
 
 const mapStateToProps = state => {
   return {
-    wheelState: state.wheel
+    wheelState: state.initialWheelState
   }
 }
 
-export default connect(mapStateToProps, {})(Wheel);
+export default connect(mapStateToProps, {moveClockwise})(Wheel);

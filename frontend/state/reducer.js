@@ -12,17 +12,10 @@ const initialFormState = {
   newFalseAnswer: '',
 }
 
-const initialState = {
-  wheelState: initialWheelState,
-  quizState: initialQuizState,
-  selectedAnswerState: initialSelectedAnswerState,
-  messageState: initialMessageState,
-  formState: initialFormState
-}
 
 
 
-function wheel(state = initialState, action) {
+function wheel(state = initialWheelState, action) {
  //need to set index between 0-5 (1-6), and change the css status of the selected circle to active for cog
  /* initial state for the wheel is the 0 index*/
  //
@@ -31,54 +24,66 @@ function wheel(state = initialState, action) {
   
     switch(action.type){
       case MOVE_CLOCKWISE:
-        return {
-            ...state, 
-            wheelState: action.payload + 1 ,
-        }
+        if (--state < 0) return 5;
+        return state--
+
         case MOVE_COUNTERCLOCKWISE:
-        return {
-            ...state, 
-            wheelState: action.payload - 1 ,
-        }
+          if (++state > 5) return 0;
+          return state++
+
         default: {
-          return  {wheelState: initialWheelState}
+          return state
 
         }
     }
-  
+}
 
+function quiz(state = initialQuizState, action) {
+    switch(action.type) {
+      case SET_QUIZ_INTO_STATE:
+        return action.payload
+        default:
+          return state
+
+    }
+     
+} 
+
+function selectedAnswer(state = initialSelectedAnswerState, action) {
+  switch(action.type) {
+    case SET_SELECTED_ANSWER:
+      return action.payload
+      default:
+        return state
+
+  }
 }
 
 
-
-function quiz(state = initialState, action) {
-  return{}
-   
-}
-
-
-function selectedAnswer(state = initialState, action) {
- return{}
-}
-
-
-function infoMessage(state = initialState, action) {
+function infoMessage(state = initialMessageState, action) {
   switch(action.type) {
     case SET_INFO_MESSAGE: 
-      return {
-        ...state,
-        messageState: action.payload
-      };
+      return action.payload
       default:
-        return null
-  }
+        return state
 
+}
 }
 
 
 
-function form(state = initialState, action) {
-return{}
+function form(state = initialFormState, action) {
+  switch (action.type) {
+    case INPUT_CHANGE:
+      return {
+        ...state,
+        [action.payload.id]: action.payload.value 
+      }
+    case RESET_FORM:
+      return initialFormState 
+    default:
+      return state
+  }
 }
 
 export default combineReducers({ wheel, quiz, selectedAnswer, infoMessage, form })
