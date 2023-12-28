@@ -1,9 +1,16 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-export default function Wheel(props) {
+const Wheel = (props) => {
+  console.log(props)
+
+  const counterClockwise = () => {
+    wheel.moveClockwise()
+  }
   return (
     <div id="wrapper">
       <div id="wheel">
+        {/* need to map over this using the active class. */}
         <div className="cog active" style={{ "--i": 0 }}>B</div>
         <div className="cog" style={{ "--i": 1 }}></div>
         <div className="cog" style={{ "--i": 2 }}></div>
@@ -18,3 +25,11 @@ export default function Wheel(props) {
     </div>
   )
 }
+
+const mapStateToProps = state => {
+  return {
+    wheelState: state.wheel
+  }
+}
+
+export default connect(mapStateToProps, {})(Wheel);
