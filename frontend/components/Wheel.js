@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 import { moveClockwise, moveCounterClockwise } from '../state/action-creators'
 
 const Wheel = (props) => {
-  console.log(props)
 
-  
   
   return (
     <div id="wrapper">

@@ -20,8 +20,15 @@ export function setMessage(message) {
  }
 //set quiz is for submitting the form
 export function setQuiz(formState) {
-  return({type: SET_QUIZ_INTO_STATE, payload: formState})
- }
+  return function (dispatch) {
+    axios
+      .post('http://localhost:9000/api/quiz/new', { question_text: quiz.newQuestion, true_answer_text: quiz.newTrueAnswer, false_answer_text: quiz.newFalseAnswer })
+      .then(res => {
+        dispatch({ type: SET_INFO_MESSAGE, payload: `Congrats: "${quiz.newQuestion}" is a great question!` }) 
+        dispatch(resetForm())
+      })
+  }
+}
 //input change will need to accept the change from all of 3 inputs
 export function inputChange(input, value) {
   return({type: INPUT_CHANGE, payload: {input, value}})
@@ -51,11 +58,10 @@ export function fetchQuiz() {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
-    dispatch({type: RESET_FORM});
-    axios.get(''
-    .then(res => {
-      console.log(res)
-    }))
+    dispatch({type: SET_QUIZ_INTO_STATE, payload: null});
+    axios.get('http://localhost:9000/api/quiz/next')
+      .then(res => dispatch({ type: SET_QUIZ_INTO_STATE, payload: res.data }))
+    
   }
 }
 export function postAnswer() {
@@ -64,11 +70,13 @@ export function postAnswer() {
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
     // - Dispatch the fetching of the next quiz
-    dispatch({type: RESET_FORM});
-    axios.get(''
+    axios
+    .post('http://localhost:9000/api/quiz/answer', { quiz_id, answer_id })
     .then(res => {
-      console.log(res)
-    }))
+      dispatch({ type: SET_SELECTED_ANSWER, payload: null })
+      dispatch({ type: SET_INFO_MESSAGE, payload: res.data.message })
+      fetchQuiz()(dispatch)
+    })
   }
 }
 export function postQuiz() {
