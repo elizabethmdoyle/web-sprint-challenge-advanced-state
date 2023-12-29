@@ -24,9 +24,10 @@ export function setQuiz(formState) {
     axios
       .post('http://localhost:9000/api/quiz/new', { question_text: quiz.newQuestion, true_answer_text: quiz.newTrueAnswer, false_answer_text: quiz.newFalseAnswer })
       .then(res => {
-        dispatch({ type: SET_INFO_MESSAGE, payload: `Congrats: "${quiz.newQuestion}" is a great question!` }) 
+        dispatch({ type: SET_INFO_MESSAGE, payload: `Congrats: "${quiz.newQuestion}" is a great question!` }) /**Reviewed with Chris. Added the message from test*/ 
         dispatch(resetForm())
       })
+  
   }
 }
 //input change will need to accept the change from all of 3 inputs
